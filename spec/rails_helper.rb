@@ -5,7 +5,13 @@ require 'spec_helper'
 require 'simplecov'
 ENV['RAILS_ENV'] ||= 'test'
 # We need to start here before the source code is loaded
-SimpleCov.start
+SimpleCov.start do
+  add_group 'Model', 'app/models'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Services', 'app/services'
+  add_group 'Lib', 'lib'
+end
+
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
