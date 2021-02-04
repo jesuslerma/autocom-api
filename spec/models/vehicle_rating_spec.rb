@@ -8,6 +8,6 @@ RSpec.describe VehicleRating, type: :model do
   end
 
   describe 'enums' do
-    it { should define_enum_for(:rating).with(%i[excellent good bad]) }
+    it { should define_enum_for(:rating).with_values(%i[excellent good bad]) }
   end
 end

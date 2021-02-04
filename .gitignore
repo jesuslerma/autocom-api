@@ -26,4 +26,12 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 coverage
+
+# Ignore environment variables
 .env
+
+# Ignore vim files
+*~
+*.swp
+*.swo
+
