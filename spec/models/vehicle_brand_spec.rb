@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe VehicleBrand, type: :model do
-  it 'has many models' do
-    brand = VehicleBrand.reflect_on_association(:models)
-    expect(brand.macro).to eq(:has_many)
+  describe 'associations' do
+    it { should have_many(:models).class_name('VehicleModel').with_foreign_key('brand_id') }
   end
 end

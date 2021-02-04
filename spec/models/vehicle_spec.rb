@@ -3,13 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Vehicle, type: :model do
-  it 'belongs to model' do
-    model = Vehicle.reflect_on_association(:model)
-    expect(model.macro).to eq(:belongs_to)
-  end
-
-  it 'has many ratings' do
-    model = Vehicle.reflect_on_association(:ratings)
-    expect(model.macro).to eq(:has_many)
+  describe 'associations' do
+    it { should belong_to(:model).class_name('VehicleModel') }
+    it { should have_many(:ratings).class_name('VehicleRating').with_foreign_key('vehicle_id') }
   end
 end
