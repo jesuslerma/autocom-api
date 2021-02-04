@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VehiclesController < ApplicationController
+class VehiclesController < BaseController
   def create
     @vehicle = Vehicles::Models::CreateVehicle.call(vehicle_params)
     if @vehicle.errors.present?
