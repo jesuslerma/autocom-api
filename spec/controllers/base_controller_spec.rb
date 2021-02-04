@@ -4,12 +4,11 @@ require 'rails_helper'
 
 RSpec.describe BaseController, type: :controller do
   let(:token) { 'TEST123' }
-  let(:headers)  { { Authorization: "Token token=#{token}" } }
+  let(:headers) { { Authorization: "Token token=#{token}" } }
 
-   describe 'handling access denied' do
+  describe 'handling access denied' do
     controller do
-      def index
-      end
+      def index; end
     end
 
     it 'returns error' do
@@ -21,8 +20,7 @@ RSpec.describe BaseController, type: :controller do
 
   describe 'handling access denied' do
     controller do
-      def index
-      end
+      def index; end
     end
 
     it 'returns error' do

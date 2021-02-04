@@ -6,4 +6,5 @@ class VehicleModel < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :brand_id, presence: true
+  validates :market_price, numericality: { greater_than: 0 }
 end

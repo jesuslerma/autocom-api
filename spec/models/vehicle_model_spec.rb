@@ -13,5 +13,7 @@ RSpec.describe VehicleModel, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_uniqueness_of(:name) }
     it { should validate_presence_of(:brand_id) }
+    it { should_not allow_value(-1).for(:market_price) }
+    it { should_not allow_value(0).for(:market_price) }
   end
 end

@@ -2,10 +2,11 @@
 
 class BaseController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
-  TOKEN='TEST123'
+  TOKEN = 'TEST123'
   before_action :authenticate
 
   private
+
   def authenticate
     authenticate_or_request_with_http_token do |token|
       ActiveSupport::SecurityUtils.secure_compare(token, TOKEN)
@@ -15,6 +16,6 @@ class BaseController < ApplicationController
   end
 
   def render_unauthorized
-    render(json: { errors: 'Unauthenticated!' }, status: :unauthorized)
+    render(json: { error: 'Not Authorized!' }, status: :unauthorized)
   end
 end
