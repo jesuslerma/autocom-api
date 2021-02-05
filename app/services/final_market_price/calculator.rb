@@ -13,6 +13,8 @@ module FinalMarketPrice
 
     validates :vehicle, presence: true
 
+    CURRENT_YEAR = 2021
+
     def initialize(vehicle)
       @vehicle = vehicle
       @final_market_price = 0
@@ -21,6 +23,7 @@ module FinalMarketPrice
       @year = @vehicle.year
       @market_price = @vehicle.model.market_price
       @max_mileage = 20_000
+      @min_mileage = 5_000 # I put this information, but this information is missing from the quiz
       @year_deprecation = 0.15
       @model = vehicle.model
     end
@@ -34,7 +37,6 @@ module FinalMarketPrice
       @rating = :excellent if excellent_rating?
       @rating = :good if good_rating?
       @rating = :bad if bad_rating?
-
     end
 
     def create_vehicle_rating
@@ -45,21 +47,69 @@ module FinalMarketPrice
       )
     end
 
-    def calc_final_market_price
-      year_deprecation_cost = @market_price * @year_deprecation 
-      mileage_deprecation_cost = @market_price * mileage_deprecation
+    def calc_final_market_price_for_prev_recent_models
+      year_deprecation_cost = @market_price * @year_deprecation
+      mileage_deprecation_cost = @market_price * mileage_deprecation(@max_mileage)
       ((@market_price - year_deprecation_cost) - mileage_deprecation_cost).to_i
+    end
+
+    def calc_final_market_price_for_old_models
+      if high_mileage?
+        year_deprecation_cost = calc_year_deprecation
+        max_mileage = calc_max_mileage
+        mileage_deprecation_cost = @market_price * mileage_deprecation(max_mileage)
+        return ((@market_price - year_deprecation_cost) - mileage_deprecation_cost).to_i
+      end
+
+      if low_mileage?
+        year_deprecation_cost = calc_year_deprecation
+        max_mileage = calc_max_mileage
+        mileage_deprecation_cost = @market_price * mileage_deprecation_bonus
+        ((@market_price - year_deprecation_cost) - mileage_deprecation_cost).to_i
+      end
+    end
+
+    def calc_year_deprecation
+      @market_price * (@year_deprecation + (0.01 * vehicle_years))
+    end
+
+    def calc_max_mileage
+      @max_mileage * vehicle_years
+    end
+
+    def calc_mileage_deprecation_bonus; end
+
+    # TODO: probably we can move this to vehicle model
+    def vehicle_years
+      CURRENT_YEAR - @year
+    end
+
+    def mileage_deprecation_bonus
+      return 0.02 if @mileage > @min_mileage
+      return 0 if @mileage == @min_mileage
+      return -0.01 if @mileage < @min_mileage
     end
 
     private
 
-    def mileage_deprecation
-      return 0.20 if apply_deprecation?
+    def mileage_deprecation(max_mileage)
+      return 0.20 if apply_prev_year_deprecation?(max_mileage)
+
       0.0
     end
 
-    def apply_deprecation?
+    def apply_prev_year_deprecation?(max_mileage)
+      @mileage > max_mileage
+    end
+
+    # TODO: we need to know what they means by  High Mileage:
+    def high_mileage?
       @mileage > @max_mileage
+    end
+
+    # TODO: we need to know what they means by  Low Mileage:
+    def low_mileage?
+      @mileage < @max_mileage
     end
 
     def excellent_rating?; end
