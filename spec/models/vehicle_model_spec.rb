@@ -11,7 +11,7 @@ RSpec.describe VehicleModel, type: :model do
   describe 'validations' do
     subject { build(:vehicle_model) }
     it { should validate_presence_of(:name) }
-    it { should validate_uniqueness_of(:name) }
+    it { should validate_uniqueness_of(:name).case_insensitive }
     it { should validate_presence_of(:brand_id) }
     it { should_not allow_value(-1).for(:market_price) }
     it { should_not allow_value(0).for(:market_price) }

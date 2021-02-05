@@ -5,7 +5,7 @@ class VehicleModelsController < BaseController
     @vehicle_model = Vehicles::Models::CreateVehicleModel.call(vehicle_model_params)
 
     if @vehicle_model.errors.present?
-      render json: @vehicle_model.errors, status: :unprocessable_entity
+      render json: { errors: @vehicle_model.errors }, status: :unprocessable_entity
     else
       render json: @vehicle_model, status: :created
     end

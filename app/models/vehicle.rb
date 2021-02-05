@@ -2,7 +2,7 @@
 
 class Vehicle < ApplicationRecord
   belongs_to :model, class_name: 'VehicleModel'
-  has_many :ratings, dependent: :destroy, class_name: 'VehicleRating'
+  has_one :rating, dependent: :destroy, class_name: 'VehicleRating'
 
   validates :year, presence: true
   validates :listed_price, presence: true
