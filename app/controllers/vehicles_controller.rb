@@ -6,7 +6,7 @@ class VehiclesController < BaseController
   def create
     @vehicle = Vehicles::Models::CreateVehicle.call(vehicle_params)
     if @vehicle.errors.present?
-      render json: {errors:  @vehicle.errors }, status: :unprocessable_entity
+      render json: { errors: @vehicle.errors }, status: :unprocessable_entity
     else
       render json: @vehicle, status: :created
     end
@@ -17,7 +17,7 @@ class VehiclesController < BaseController
   end
 
   private
-  
+
   def search_params
     params.permit(:model_name, :year, :rating)
   end

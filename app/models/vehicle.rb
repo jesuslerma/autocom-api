@@ -17,18 +17,16 @@ class Vehicle < ApplicationRecord
 
   def self.search(params)
     @vehicles = all
-    if params.include?(:year)
-      @vehicles = @vehicles.where(year: params[:year])
-    end
+    @vehicles = @vehicles.where(year: params[:year]) if params.include?(:year)
 
     if params.include?(:model_name)
-      @vehicles = @vehicles.joins(:model).where('lower(vehicle_models.name) LIKE ?', "%#{params[:model_name].downcase}%")
+      @vehicles = @vehicles.joins(:model).where('lower(vehicle_models.name) LIKE ?',
+                                                "%#{params[:model_name].downcase}%")
     end
-
 
     if params.include?(:rating)
       rating = VehicleRating.ratings[params[:rating]]
-      @vehicles = @vehicles.joins(:rating).where('vehicle_ratings.rating = ?', rating)
+      @vehicles = @vehicles.joins(:rating).where(vehicle_ratings: { rating: rating })
     end
 
     @vehicles

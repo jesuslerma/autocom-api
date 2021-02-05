@@ -7,5 +7,5 @@ class VehicleModel < ApplicationRecord
   validates :brand_id, presence: true
   validates :market_price, numericality: { greater_than: 0 }
 
-  validates_uniqueness_of :name, case_sensitive: false
+  validates :name, uniqueness: { case_sensitive: false }
 end

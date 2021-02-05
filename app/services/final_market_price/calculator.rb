@@ -33,11 +33,11 @@ module FinalMarketPrice
     end
 
     def call
-      if (CURRENT_YEAR - 1) >= 2020
-        @final_market_price = calc_final_market_price_for_prev_recent_models
-      else
-        @final_market_price = calc_final_market_price_for_old_models
-      end
+      @final_market_price = if (CURRENT_YEAR - 1) >= 2020
+                              calc_final_market_price_for_prev_recent_models
+                            else
+                              calc_final_market_price_for_old_models
+                            end
 
       update_vehicle_final_market_price
       @rating = :excellent if excellent_rating?
@@ -45,8 +45,8 @@ module FinalMarketPrice
       @rating = :bad if bad_rating?
       create_vehicle_rating
     end
-    
-    # TODO add test
+
+    # TODO: add test
     def update_vehicle_final_market_price
       @vehicle.update_column(:final_market_price, @final_market_price)
     end
@@ -129,7 +129,7 @@ module FinalMarketPrice
     end
 
     def good_rating?
-      @list_price < (@final_market_price * 0.80) || @list_price  < (@final_market_price * 1.10)
+      @list_price < (@final_market_price * 0.80) || @list_price < (@final_market_price * 1.10)
     end
 
     def bad_rating?
