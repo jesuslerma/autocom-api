@@ -33,11 +33,12 @@ module FinalMarketPrice
     end
 
     def call
-      if CURRENT_YEAR - @year >= 2020
+      if (CURRENT_YEAR - 1) >= 2020
         @final_market_price = calc_final_market_price_for_prev_recent_models
       else
         @final_market_price = calc_final_market_price_for_old_models
       end
+
       update_vehicle_final_market_price
       @rating = :excellent if excellent_rating?
       @rating = :good if good_rating?
