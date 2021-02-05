@@ -47,8 +47,7 @@ module FinalMarketPrice
     
     # TODO add test
     def update_vehicle_final_market_price
-      @vehicle.final_market_price = @final_market_price
-      # @vehicle.save validate with callback
+      @vehicle.update_column(:final_market_price, @final_market_price)
     end
 
     def create_vehicle_rating
