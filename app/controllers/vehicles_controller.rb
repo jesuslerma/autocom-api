@@ -13,10 +13,14 @@ class VehiclesController < BaseController
   end
 
   def index
-    render json: Vehicle.all, status: :ok
+    render json: Vehicle.search(search_params), status: :ok
   end
 
   private
+  
+  def search_params
+    params.permit(:model_name, :year, :rating)
+  end
 
   def vehicle_params
     params.permit(:brand, :model, :year, :price)
