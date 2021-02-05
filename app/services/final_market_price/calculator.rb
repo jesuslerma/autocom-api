@@ -18,10 +18,10 @@ module FinalMarketPrice
     def initialize(vehicle)
       @vehicle = vehicle
       @final_market_price = 0
-      @list_price = @vehicle.listed_price
-      @mileage = @vehicle.mileage
+      @list_price = @vehicle.listed_price || 0
+      @mileage = @vehicle.mileage || 0
       @year = @vehicle.year
-      @market_price = @vehicle.model.market_price
+      @market_price = @vehicle.model.market_price || 0
       @max_mileage = 20_000
       @min_mileage = 5_000 # I put this information, but this information is missing from the quiz
       @year_deprecation = 0.15

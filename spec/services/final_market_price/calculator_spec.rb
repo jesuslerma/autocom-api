@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe FinalMarketPrice::Calculator, type: :model do
   let(:brand) { create(:vehicle_brand) }
   let(:model) { create(:vehicle_model, brand: brand) }
-  let(:vehicle) { create(:vehicle, model: model) }
+  let(:vehicle) { build(:vehicle, model: model) }
   let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
 
   describe 'validations' do
@@ -29,7 +29,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
 
   describe 'calc_final_market_price_for_prev_recent_models' do
     context 'when the mileage is greather than max_mileage' do
-      let(:vehicle) { create(:vehicle, model: model) }
+      let(:vehicle) { build(:vehicle, model: model) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should apply 15% and 20% percentage' do
         final_market_price = calculator.calc_final_market_price_for_prev_recent_models
@@ -39,7 +39,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
 
     context 'when the mileage is lesser than max_mileage' do
       let(:model) { create(:vehicle_model, brand: brand) }
-      let(:vehicle) { create(:vehicle, model: model, mileage: 15_000) }
+      let(:vehicle) { build(:vehicle, model: model, mileage: 15_000) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should apply 15% percentage' do
         final_market_price = calculator.calc_final_market_price_for_prev_recent_models
@@ -48,7 +48,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
     end
 
     context 'when the mileage is equals than max_mileage' do
-      let(:vehicle) { create(:vehicle, model: model, mileage: 20_000) }
+      let(:vehicle) { build(:vehicle, model: model, mileage: 20_000) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should apply 15% percentage' do
         final_market_price = calculator.calc_final_market_price_for_prev_recent_models
@@ -77,7 +77,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
 
   describe 'mileage_deprecation_bonus' do
     context 'when the mileage is greather than min_milage' do
-      let(:vehicle) { create(:vehicle, model: model, mileage: 20_000) }
+      let(:vehicle) { build(:vehicle, model: model, mileage: 20_000) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should subtract 2%' do
         expect(calculator.mileage_deprecation_bonus).to eql(0.02)
@@ -85,7 +85,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
     end
 
     context 'when the mileage is equals to min_milage' do
-      let(:vehicle) { create(:vehicle, model: model, mileage: 5_000) }
+      let(:vehicle) { build(:vehicle, model: model, mileage: 5_000) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should subtract 0%' do
         expect(calculator.mileage_deprecation_bonus).to eql(0)
@@ -93,7 +93,7 @@ RSpec.describe FinalMarketPrice::Calculator, type: :model do
     end
 
     context 'when the mileage is equals to min_milage' do
-      let(:vehicle) { create(:vehicle, model: model, mileage: 3_000) }
+      let(:vehicle) { build(:vehicle, model: model, mileage: 3_000) }
       let(:calculator) { FinalMarketPrice::Calculator.new(vehicle) }
       it 'should add 1% bonus' do
         expect(calculator.mileage_deprecation_bonus).to eql(-0.01)
