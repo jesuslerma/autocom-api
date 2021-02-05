@@ -5,5 +5,6 @@ FactoryBot.define do
     model { build(:vehicle_model) }
     listed_price { 9000 }
     year { 2020 }
+    mileage { 100_000 }
   end
 end
